@@ -1,8 +1,8 @@
 package routes
 
 import (
+	v1 "go-project-back/api/v1"
 	"go-project-back/utils"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,11 +14,22 @@ func InitRouter() {
 
 	router := r.Group("api/v1")
 	{
-		router.GET("hello", func(c *gin.Context){
-			c.JSON(http.StatusOK, gin.H{
-				"msg": "ok",
-			})
-		})
+		// 测试接口 localhost:3000/api/v1/hello
+		// routerV1.GET("hello", func(c *gin.Context){
+		// 	c.JSON(http.StatusOK, gin.H{
+		// 		"msg": "ok",
+		// 	})
+		// })
+
+
+		// 用户模块的路由接口
+		router.POST("user/add",v1.AddUser)
+		router.GET("users",v1.GetUsers)
+		router.PUT("user/:id",v1.EditUser)
+		router.DELETE("user/:id",v1.DeleteUser)
+		// 分类模块的用户接口
+
+		// 文章模块的用户接口
 	}
 
 	r.Run(utils.HttpPort)

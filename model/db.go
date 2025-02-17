@@ -27,17 +27,17 @@ func InitDb(){
 	utils.DbPort,
 	utils.DbName,
 	)
-  	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+  	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		fmt.Printf("连接数据库失败，请检查参数", err)
 	}
 
 
-	db.AutoMigrate()
+	db.AutoMigrate(&User{},&Category{},&Article{})
 
 	// 获取通用数据库对象 sql.DB ，然后使用其提供的功能
-	sqlDB, err := db.DB()
+	sqlDB, _ := db.DB()
 
 	// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。
 	sqlDB.SetMaxIdleConns(10)
