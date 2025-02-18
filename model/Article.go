@@ -18,7 +18,15 @@ type Article struct {
 	Img string `gorm:"type:varchar(100);not null" json:"img"`
 }
 
-// todo 查询分类下所有文章
+// 查询分类下所有文章
+func GetCateArt(id int, pageSize int, pageNum int)([]Article, int) {
+	var cateArtList []Article
+	err := db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Where("cid = ?", id).Find(&cateArtList).Error
+	if err != nil {
+		return nil, errmsg.ERROR_CATEGORY_NOT_EXIST
+	}
+	return cateArtList, errmsg.SUCCESS
+}
 
 // 新增文章      这里要传指针
 func CreateArt(data *Article)int {
@@ -29,14 +37,24 @@ func CreateArt(data *Article)int {
 	return errmsg.SUCCESS
 }
 
-// todo 查询单个文章
+// 查询单个文章
+func GetArtInfo(id int)(Article,int) {
+	var art Article
+	err := db.Preload("Category").Where("id = ?",id).First(&art).Error
+	if err != nil {
+		return art, errmsg.ERROR_ART_NOT_EXIST
+	}
+	return art,errmsg.SUCCESS
+}
 
-// todo 查询分类列表
-func GetArt(pageSize int, pageNum int) []Article {
-	var cates []Article
-	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&cates).Error
-	if err != nil && err != gorm.ErrRecordNotFound { return nil }
-	return cates
+// 查询文章列表
+func GetArt(pageSize int, pageNum int) ([]Article, int) {
+	var articleList []Article
+	err = db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&articleList).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, errmsg.ERROR
+	}
+	return articleList, errmsg.SUCCESS
 }
 
 // 编辑分类
