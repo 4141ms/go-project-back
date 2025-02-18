@@ -10,6 +10,8 @@ const (
 	ERROR_USER_NOT_EXIST = 1003
 	ERROR_TOKEN_EXIST    = 1004
 	ERROR_TOKEN_RUNTIME  = 1005
+	// code = 2000... 分类模块错误
+	ERROR_CATEGORY_USED = 2001
 )
 
 var codeMsg = map[int]string{
@@ -20,6 +22,7 @@ var codeMsg = map[int]string{
 	ERROR_TOKEN_EXIST:    "TOKEN不存在",
 	ERROR_USERNAME_USED:  "用户名已存在",
 	ERROR_USER_NOT_EXIST: "用户不存在",
+	ERROR_CATEGORY_USED:  "该分类已存在",
 }
 
 func GetErrMsg(code int) string {
